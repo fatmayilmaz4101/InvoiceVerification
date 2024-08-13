@@ -7,7 +7,6 @@ import PopUp from "../../components/pop-up/page";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Controller, useForm } from "react-hook-form";
-import { UseCompanyLists } from "@/app/hooks/useCompanyLists";
 import { postCompanyList } from "@/app/services/CompanyListService";
 import { Dropdown } from "primereact/dropdown";
 import {
@@ -16,11 +15,12 @@ import {
 } from "@/app/enums/InvoiceUnitEnum";
 import { CompanyListType } from "@/types/service";
 import { Currency, CurrencyOptions } from "@/app/enums/CurrencyEnum";
+import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 
 const CompanyList = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { data: companies = [], isLoading, error, refetch } = UseCompanyLists();
+  const { data: companies = [], isLoading, error, refetch } = UseCompanyList();
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
@@ -108,13 +108,13 @@ const CompanyList = () => {
         ColumnArray={() => Columns()}
       ></GenericDataTable>
       <PopUp show={showPopup} onClose={togglePopup}>
-        <h2 className="text-center">Firma Ekle</h2>
-        <div className="p-fluid formgrid grid">
+        <h2 className="text-center">Add Company</h2>
+        <div className="p-fluid formgrid grid gap-4">
           <Controller
             control={control}
             rules={{}}
             render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12">
+              <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
                     <InputText
@@ -133,7 +133,7 @@ const CompanyList = () => {
             control={control}
             rules={{}}
             render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12">
+              <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
                     <InputText
@@ -152,7 +152,7 @@ const CompanyList = () => {
             control={control}
             rules={{}}
             render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12">
+              <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
                     <Dropdown
@@ -175,7 +175,7 @@ const CompanyList = () => {
             control={control}
             rules={{}}
             render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12">
+              <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
                     <Dropdown
@@ -187,7 +187,7 @@ const CompanyList = () => {
                       options={InvoiceCurrencyOptions}
                       optionLabel="label"
                     />
-                    <label htmlFor="InvoiceCurrency">Invoice Unit</label>
+                    <label htmlFor="InvoiceCurrency">Invoice Currency</label>
                   </FloatLabel>
                 </span>
               </div>
@@ -198,7 +198,7 @@ const CompanyList = () => {
             control={control}
             rules={{}}
             render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12">
+              <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
                     <InputText
@@ -214,9 +214,7 @@ const CompanyList = () => {
             name="Description"
           />
           <div className="flex justify-center items-center">
-            <Button onClick={handleSubmit(onSubmit)} outlined>
-              Ekle
-            </Button>
+            <Button onClick={handleSubmit(onSubmit)}>Add</Button>
           </div>
         </div>
       </PopUp>

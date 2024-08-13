@@ -5,7 +5,7 @@ import {
 } from "../services/CompanyListService";
 import { CompanyListType } from "@/types/service";
 
-export const UseCompanyLists = () => {
+export const UseCompanyList = () => {
   const queryClient = useQueryClient();
 
   const companyQuery = useQuery<CompanyListType[]>({

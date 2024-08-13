@@ -1,11 +1,7 @@
 import { ArticleListType } from "@/types/service";
+import ApiClient from "./ApiClient";
 
-export const ArticleListService = {
-  getArticleList() {
-    return fetch("/data/stock-list.json", {
-      headers: { "Cache-Control": "no-cache" },
-    })
-      .then((response) => response.json())
-      .then((data) => data as ArticleListType[]);
-  },
+export const getArticleLists = async (): Promise<ArticleListType[]> => {
+  const response = await ApiClient.get("/ArticleList");
+  return response.data;
 };

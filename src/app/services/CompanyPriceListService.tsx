@@ -1,11 +1,9 @@
 import { CompanyPriceListType } from "@/types/service";
+import ApiClient from "./ApiClient";
 
-export const CompanyPriceListService = {
-  getCompanyList() {
-    return fetch("/data/company-price-list.json", {
-      headers: { "Cache-Control": "no-cache" },
-    })
-      .then((response) => response.json())
-      .then((data) => data as CompanyPriceListType[]);
-  },
+export const getCompanyPriceLists = async (): Promise<
+  CompanyPriceListType[]
+> => {
+  const response = await ApiClient.get("/CompanyPriceList");
+  return response.data;
 };

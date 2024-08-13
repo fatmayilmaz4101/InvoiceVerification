@@ -3,25 +3,14 @@ import { Button } from "primereact/button";
 import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
 import { useEffect, useState } from "react";
-import { ArticleListService } from "@/app/services/ArticleListService";
-import { ArticleListType } from "@/types/service";
+import { UseArticleList } from "@/app/hooks/UseArticleList";
 
 const ArticleList = () => {
-  const [articleList, setArticleList] = useState<ArticleListType[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const {data: articles = [], isLoading} = UseArticleList();
   useEffect(() => {
-    ArticleListService.getArticleList().then((data) => setArticleList(data));
     setLoading(false);
   }, []);
-
-  // const formatDate = (value: Date) => {
-  //   return value.toLocaleDateString("en-US", {
-  //     day: "2-digit",
-  //     month: "2-digit",
-  //     year: "numeric",
-  //   });
-  // };
 
   const renderHeader = () => {
     return (
@@ -70,7 +59,7 @@ const ArticleList = () => {
   return (
     <>
       <GenericDataTable
-        value={articleList}
+        value={articles}
         header={header}
         loading={loading}
         ColumnArray={() => Columns()}

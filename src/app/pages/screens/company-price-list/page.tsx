@@ -3,19 +3,13 @@ import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import React, { useEffect, useState } from "react";
 import GenericDataTable from "../../components/table/page";
-import { CompanyPriceListService } from "@/app/services/CompanyPriceListService";
-import { CompanyPriceListType } from "@/types/service";
+import { UseCompanyPriceLists } from "@/app/hooks/UseCompanyPriceList";
 
 const CompanyPriceList = () => {
-  const [companyPriceList, setCompanyPriceList] = useState<
-    CompanyPriceListType[]
-  >([]);
   const [loading, setLoading] = useState(true);
+  const { data: companyPrices = [], isLoading, error, refetch } = UseCompanyPriceLists();
 
   useEffect(() => {
-    CompanyPriceListService.getCompanyList().then((data) =>
-      setCompanyPriceList(data)
-    );
     setLoading(false);
   }, []);
 
@@ -94,7 +88,7 @@ const CompanyPriceList = () => {
   return (
     <>
       <GenericDataTable
-        value={companyPriceList}
+        value={companyPrices}
         header={header}
         loading={loading}
         ColumnArray={() => Columns()}
