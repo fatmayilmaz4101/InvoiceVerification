@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import Link from "next/link";
 import React, {
   forwardRef,
@@ -25,7 +23,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((props, ref) => {
   return (
     <div className="layout-topbar">
       <Link href="/" className="layout-topbar-logo">
-        <span>Fatura Doğrulama</span>
+        <span>Invoice Verification</span>
       </Link>
 
       <button

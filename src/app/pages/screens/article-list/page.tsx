@@ -1,69 +1,67 @@
 "use client";
 import { Button } from "primereact/button";
-import { useEffect, useState } from "react";
 import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
-import { CompanyDefinitionService } from "@/app/services/CompanyDefinitionService";
+import { useEffect, useState } from "react";
+import { ArticleListService } from "@/app/services/ArticleListService";
+import { ArticleListType } from "@/types/service";
 
-const CompanyDefinition = () => {
-  const [companyDefinition, setCompanyDefinition] = useState<
-    Services.CompanyDefinition[]
-  >([]);
+const ArticleList = () => {
+  const [articleList, setArticleList] = useState<ArticleListType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    CompanyDefinitionService.getCompanyDefinition().then((data) =>
-      setCompanyDefinition(data)
-    );
+    ArticleListService.getArticleList().then((data) => setArticleList(data));
     setLoading(false);
   }, []);
+
+  // const formatDate = (value: Date) => {
+  //   return value.toLocaleDateString("en-US", {
+  //     day: "2-digit",
+  //     month: "2-digit",
+  //     year: "numeric",
+  //   });
+  // };
 
   const renderHeader = () => {
     return (
       <div className="flex justify-content-between">
-        <Button label="İçeri aktar" raised />
+        <Button label="Add" raised />
       </div>
     );
   };
   const Columns = () => {
     return [
       <Column
-        field="firma_cari_kodu"
-        header="Firma Cari Kodu"
-        dataType="numeric"
-        style={{ minWidth: "10rem" }}
+        field="ArticleNo"
+        header="Article No"
+        style={{ minWidth: "12rem" }}
         key={1}
       />,
       <Column
-        field="firma_cari_adi"
-        header="Firma Cari Adı"
+        field="ArticleName"
+        header="Article Name"
         style={{ minWidth: "12rem" }}
         key={2}
       />,
       <Column
-        field="vade"
-        header="Vade"
+        field="Unit"
+        header="Unit"
         style={{ minWidth: "14rem" }}
         key={3}
       />,
       <Column
-        field="fatura_birimi"
-        header="Fatura Birimi"
+        field="Description"
+        header="Description"
         style={{ minWidth: "14rem" }}
-        key={3}
+        key={5}
       />,
       <Column
-        field="tarih"
-        header="Tarih"
+        field="CreatedDate"
+        header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
         key={4}
-      />,
-      <Column
-        field="aciklama"
-        header="Açıklama"
-        style={{ minWidth: "14rem" }}
-        key={5}
       />,
     ];
   };
@@ -72,7 +70,7 @@ const CompanyDefinition = () => {
   return (
     <>
       <GenericDataTable
-        value={companyDefinition}
+        value={articleList}
         header={header}
         loading={loading}
         ColumnArray={() => Columns()}
@@ -80,4 +78,4 @@ const CompanyDefinition = () => {
     </>
   );
 };
-export default CompanyDefinition;
+export default ArticleList;

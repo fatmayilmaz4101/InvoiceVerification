@@ -21,13 +21,15 @@ const GenericDataTable = ({
       <div className="col-12">
         <div className="card">
           <DataTable
+            size="small"
             value={value}
             paginator
             header={header}
-            rows={10}
+            rows={5}
+            rowsPerPageOptions={[5, 10, 25, 50]}
             dataKey="id"
             loading={loading}
-            emptyMessage='No datas found.'
+            emptyMessage="No datas found."
           >
             {ColumnArray()}
           </DataTable>

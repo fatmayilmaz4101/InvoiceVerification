@@ -7,12 +7,14 @@ import "primeicons/primeicons.css";
 import "../styles/layout/layout.scss";
 import "../styles/demo/Demos.scss";
 import Layout from "@/layout/layout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const queryClient = new QueryClient();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -23,11 +25,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
         ></link>
       </head>
       <body>
-        <PrimeReactProvider>
-          <LayoutProvider>
-            <Layout>{children}</Layout>
-          </LayoutProvider>
-        </PrimeReactProvider>
+        <QueryClientProvider client={queryClient}>
+          <PrimeReactProvider>
+            <LayoutProvider>
+              <Layout>{children}</Layout>
+            </LayoutProvider>
+          </PrimeReactProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

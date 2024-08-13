@@ -8,26 +8,26 @@ import { AppMenuItem } from "@/types/layout";
 const AppMenu = () => {
   const model: AppMenuItem[] = [
     {
-      label: "Anasayfa",
-      items: [{ label: "Fatura Doğrulama", icon: "pi pi-fw pi-home", to: "/" }],
+      label: "Home",
+      items: [{ label: "Invoice Verification", icon: "pi pi-fw pi-home", to: "/" }],
     },
     {
       label: "Tanımlar",
       items: [
         {
-          label: "Firma Fiyat Listesi",
+          label: "Company Price List",
           icon: "pi pi-turkish-lira",
           to: "/pages/screens/company-price-list",
         },
         {
-          label: "Firma Tanımlama",
+          label: "Company List",
           icon: "pi pi-building-columns",
-          to: "/pages/screens/company-definition",
+          to: "/pages/screens/company-list",
         },
         {
-          label: "Stok Tanımlama",
+          label: "Article List",
           icon: "pi pi-box",
-          to: "/pages/screens/stock-identification",
+          to: "/pages/screens/article-list",
         },
       ],
     },
