@@ -1,19 +1,19 @@
 export enum InvoiceCurrency {
-  DovizFaturaSatisKuru = 1,
-  DovizFaturaAlisKuru = 2,
-  TlFaturaSatisKuru = 3,
-  TlFaturaAlisKuru = 4,
+  ForeignCurrencySelling = 1,
+  ForeignCurrencyBuying = 2,
+  TLForexSelling = 3,
+  TLForexBuying = 4,
 }
 
 export const InvoiceCurrencyOptions = [
   {
-    label: "Döviz Fatura Satış Kuru",
-    value: InvoiceCurrency.DovizFaturaSatisKuru,
+    label: "Foreign Currency Selling",
+    value: InvoiceCurrency.ForeignCurrencySelling,
   },
   {
-    label: "Döviz Fatura Alış Kuru",
-    value: InvoiceCurrency.DovizFaturaAlisKuru,
+    label: "Foreign Currency Buying",
+    value: InvoiceCurrency.ForeignCurrencyBuying,
   },
-  { label: "TL Fatura Satış Kuru", value: InvoiceCurrency.TlFaturaSatisKuru },
-  { label: "TL Fatura Alış Kuru", value: InvoiceCurrency.TlFaturaAlisKuru },
+  { label: "TL Forex Selling", value: InvoiceCurrency.TLForexSelling },
+  { label: "TL Forex Buying", value: InvoiceCurrency.TLForexBuying },
 ];

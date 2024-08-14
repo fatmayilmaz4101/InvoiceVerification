@@ -9,12 +9,9 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Controller, useForm } from "react-hook-form";
 import { postCompanyList } from "@/app/services/CompanyListService";
 import { Dropdown } from "primereact/dropdown";
-import {
-  InvoiceCurrency,
-  InvoiceCurrencyOptions,
-} from "@/app/enums/InvoiceUnitEnum";
+import { InvoiceCurrencyOptions } from "@/app/enums/InvoiceUnitEnum";
 import { CompanyListType } from "@/types/service";
-import { Currency, CurrencyOptions } from "@/app/enums/CurrencyEnum";
+import { InputNumber } from "primereact/inputnumber";
 import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 
 const CompanyList = () => {
@@ -32,8 +29,8 @@ const CompanyList = () => {
     defaultValues: {
       CompanyCode: "",
       CompanyName: "",
-      PaymentTerm: Currency.TRY,
-      InvoiceCurrency: InvoiceCurrency.DovizFaturaAlisKuru,
+      PaymentTerm: 0,
+      InvoiceCurrency: "",
       Description: "",
     },
   });
@@ -97,6 +94,7 @@ const CompanyList = () => {
       ...data,
       CreatedDate: new Date().toUTCString(),
     };
+    console.log(newData);
     postCompanyList(newData);
   };
   return (
@@ -122,7 +120,7 @@ const CompanyList = () => {
                       onChange={onChange}
                       value={value}
                     />
-                    <label htmlFor="CompanyCode">Company Account Code</label>
+                    <label htmlFor="CompanyCode">Company Code</label>
                   </FloatLabel>
                 </span>
               </div>
@@ -141,7 +139,7 @@ const CompanyList = () => {
                       onChange={onChange}
                       value={value}
                     />
-                    <label htmlFor="CompanyName">Company Account Name</label>
+                    <label htmlFor="CompanyName">Company Name</label>
                   </FloatLabel>
                 </span>
               </div>
@@ -155,14 +153,11 @@ const CompanyList = () => {
               <div className="field col-12 mb-1">
                 <span className="p-float-label">
                   <FloatLabel>
-                    <Dropdown
+                    <InputNumber
                       onBlur={onBlur}
                       value={value}
-                      onChange={onChange}
-                      checkmark={true}
-                      highlightOnSelect={false}
-                      options={CurrencyOptions}
-                      optionLabel="label"
+                      onValueChange={(e) => onChange(e.value)}
+                      id="PaymentTerm"
                     />
                     <label htmlFor="PaymentTerm">Payment Term</label>
                   </FloatLabel>

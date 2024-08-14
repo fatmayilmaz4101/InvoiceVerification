@@ -7,7 +7,6 @@ import { CompanyListType } from "@/types/service";
 
 export const UseCompanyList = () => {
   const queryClient = useQueryClient();
-
   const companyQuery = useQuery<CompanyListType[]>({
     queryKey: ["company"],
     queryFn: getCompanyLists,

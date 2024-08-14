@@ -12,7 +12,7 @@ export const postCompanyList = async (
   try {
     const response = await ApiClient.post("/CompanyList", newCompany);
     return response.data;
-  } catch (error) {
-    throw new Error("Unable to add new company. Please try again later.");
+  } catch (error: any) {
+    throw new Error("Hata:", error);
   }
 };
