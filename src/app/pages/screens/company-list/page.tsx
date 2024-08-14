@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "primereact/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
 import PopUp from "../../components/pop-up/page";
@@ -9,14 +9,16 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Controller, useForm } from "react-hook-form";
 import { postCompanyList } from "@/app/services/CompanyListService";
 import { Dropdown } from "primereact/dropdown";
-import { InvoiceCurrencyOptions } from "@/app/enums/InvoiceUnitEnum";
+import {
+  InvoiceCurrency,
+  InvoiceCurrencyOptions,
+} from "@/app/enums/InvoiceCurrencyEnum";
 import { CompanyListType } from "@/types/service";
 import { InputNumber } from "primereact/inputnumber";
 import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 
 const CompanyList = () => {
   const [showPopup, setShowPopup] = useState(false);
-  const [loading, setLoading] = useState(true);
   const { data: companies = [], isLoading, error, refetch } = UseCompanyList();
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -30,14 +32,10 @@ const CompanyList = () => {
       CompanyCode: "",
       CompanyName: "",
       PaymentTerm: 0,
-      InvoiceCurrency: "",
+      InvoiceCurrency: InvoiceCurrency.ForeignCurrencyBuying,
       Description: "",
     },
   });
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
 
   const renderHeader = () => {
     return (
@@ -92,17 +90,18 @@ const CompanyList = () => {
   const onSubmit = async (data: CompanyListType) => {
     const newData = {
       ...data,
-      CreatedDate: new Date().toUTCString(),
+      CreatedDate: new Date(),
     };
     console.log(newData);
     postCompanyList(newData);
+    refetch();
   };
   return (
     <>
       <GenericDataTable
         value={companies}
         header={header}
-        loading={loading}
+        loading={isLoading}
         ColumnArray={() => Columns()}
       ></GenericDataTable>
       <PopUp show={showPopup} onClose={togglePopup}>

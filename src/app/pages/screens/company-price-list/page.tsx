@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GenericDataTable from "../../components/table/page";
 import { UseCompanyPriceLists } from "@/app/hooks/UseCompanyPriceList";
 import { FloatLabel } from "primereact/floatlabel";
@@ -22,7 +22,6 @@ const CompanyPriceList = () => {
   const [filteredCountries, setFilteredCountries] = useState<Country[]>([]);
   const [countries, setCountries] = useState<Country[]>([]); //Serverdan gelen datalar
 
-  const [loading, setLoading] = useState(true);
   const {
     data: companyPrices = [],
     isLoading,
@@ -50,9 +49,6 @@ const CompanyPriceList = () => {
     },
   });
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
   const searchCountry = (event: AutoCompleteCompleteEvent) => {
     const filtered = [];
     const query = event.query;
@@ -85,6 +81,7 @@ const CompanyPriceList = () => {
     };
     console.log(newData);
     postCompanyPriceList(newData);
+    refetch();
   };
 
   const Columns = () => {
@@ -155,7 +152,7 @@ const CompanyPriceList = () => {
       <GenericDataTable
         value={companyPrices}
         header={header}
-        loading={loading}
+        loading={isLoading}
         ColumnArray={() => Columns()}
       ></GenericDataTable>
       <PopUp show={showPopup} onClose={togglePopup}>

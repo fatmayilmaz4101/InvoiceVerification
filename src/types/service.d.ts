@@ -1,12 +1,12 @@
-import { CurrencyType } from "@/app/enums/CurrencyTypeEnum";
-import { InvoiceUnit } from "@/app/enums/InvoiceUnitEnum";
+import { CurrencyType } from "@/app/enums/CurrencyEnum";
+import { InvoiceCurrency } from "@/app/enums/InvoiceCurrencyEnum";
 
 export type ArticleListType = {
   ArticleNo: string;
   ArticleName: string;
   Unit: string;
-  Description: string;
-  CreatedDate?: string;
+  Description?: string;
+  CreatedDate?: Date;
 };
 export type CompanyPriceListType = {
   CompanyCode: string;
@@ -16,17 +16,17 @@ export type CompanyPriceListType = {
   UnitPrice: number;
   Unit: string;
   Currency: string;
-  Description: string;
-  CreatedDate?: string;
+  Description?: string;
+  CreatedDate?: Date;
 };
 
 export type CompanyListType = {
   CompanyCode: string;
   CompanyName: string;
   PaymentTerm: number;
-  InvoiceCurrency: InvoiceUnit;
-  Description: string;
-  CreatedDate?: string;
+  InvoiceCurrency: InvoiceCurrency;
+  Description?: string;
+  CreatedDate?: Date;
 };
 
 export type Country = {

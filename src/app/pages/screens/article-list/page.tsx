@@ -2,24 +2,19 @@
 import { Button } from "primereact/button";
 import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UseArticleList } from "@/app/hooks/UseArticleList";
 import { Controller, useForm } from "react-hook-form";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
-import { InputNumber } from "primereact/inputnumber";
 import PopUp from "../../components/pop-up/page";
 import { UnitOptions } from "@/app/enums/UnitEnum";
 import { ArticleListType } from "@/types/service";
 import { postArticleList } from "@/app/services/ArticleListService";
 
 const ArticleList = () => {
-  const [loading, setLoading] = useState(true);
   const { data: articles = [], isLoading } = UseArticleList();
-  useEffect(() => {
-    setLoading(false);
-  }, []);
   const [showPopup, setShowPopup] = useState(false);
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -39,7 +34,7 @@ const ArticleList = () => {
   const onSubmit = async (data: ArticleListType) => {
     const newData = {
       ...data,
-      CreatedDate: new Date().toUTCString(),
+      CreatedDate: new Date(),
     };
     console.log(newData);
     postArticleList(newData)
@@ -94,7 +89,7 @@ const ArticleList = () => {
       <GenericDataTable
         value={articles}
         header={header}
-        loading={loading}
+        loading={isLoading}
         ColumnArray={() => Columns()}
       ></GenericDataTable>
       <PopUp show={showPopup} onClose={togglePopup}>

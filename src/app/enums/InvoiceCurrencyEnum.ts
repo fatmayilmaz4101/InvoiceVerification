@@ -1,8 +1,8 @@
 export enum InvoiceCurrency {
   ForeignCurrencySelling = 1,
-  ForeignCurrencyBuying = 2,
-  TLForexSelling = 3,
-  TLForexBuying = 4,
+  ForeignCurrencyBuying,
+  TLForexSelling,
+  TLForexBuying,
 }
 
 export const InvoiceCurrencyOptions = [
