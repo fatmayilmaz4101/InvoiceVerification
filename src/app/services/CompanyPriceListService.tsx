@@ -1,15 +1,19 @@
-import { CompanyPriceListType } from "@/types/service";
+import { CompanyPriceList, CompanyPriceListType } from "@/types/service";
 import ApiClient from "./ApiClient";
 
-export const getCompanyPriceLists = async (): Promise<
-  CompanyPriceListType[]
-> => {
-  const response = await ApiClient.get("/CompanyPriceList");
-  console.log(response.data);
-  return response.data;
+export const getCompanyPriceLists = async (
+  page: number
+): Promise<CompanyPriceList> => {
+  const response = await ApiClient.get("/CompanyPriceList", {
+    params: { page: page },
+  });
+  return {
+    companyPriceLists: response.data.companyPriceLists,
+    totalCount: response.data.totalCount,
+  };
 };
 export const postCompanyPriceList = async (
-  newCompanyPrice: Omit<CompanyPriceListType, "id">
+  newCompanyPrice: CompanyPriceListType
 ): Promise<CompanyPriceListType[]> => {
   try {
     const response = await ApiClient.post("/CompanyPriceList", newCompanyPrice);

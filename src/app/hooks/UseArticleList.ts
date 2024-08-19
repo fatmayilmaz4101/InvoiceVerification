@@ -1,13 +1,12 @@
-import { ArticleListType } from "@/types/service";
+import { ArticleList } from "@/types/service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCompanyPriceLists } from "../services/CompanyPriceListService";
 import { getArticleLists, postArticleList } from "../services/ArticleListService";
 
-export const UseArticleList = () => {
+export const UseArticleList = (page:number, articleNo?: string) => {
   const queryClient = useQueryClient();
-  const articleQuery = useQuery<ArticleListType[]>({
+  const articleQuery = useQuery<ArticleList>({
     queryKey: ["article"],
-    queryFn: getArticleLists,
+    queryFn: ()=>getArticleLists(page, articleNo),
     staleTime: 300000,
     refetchOnReconnect: true,
   });

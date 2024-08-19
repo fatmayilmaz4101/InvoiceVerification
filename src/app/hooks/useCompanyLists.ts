@@ -3,13 +3,14 @@ import {
   getCompanyLists,
   postCompanyList,
 } from "../services/CompanyListService";
-import { CompanyListType } from "@/types/service";
+import { CompanyList } from "@/types/service";
 
-export const UseCompanyList = () => {
+export const UseCompanyList = (page:number, companyCode?: string) => {
   const queryClient = useQueryClient();
-  const companyQuery = useQuery<CompanyListType[]>({
+
+  const companyQuery = useQuery<CompanyList>({
     queryKey: ["company"],
-    queryFn: getCompanyLists,
+    queryFn: ()=>getCompanyLists(page, companyCode),
     staleTime: 300000,
     refetchOnReconnect: true,
   });

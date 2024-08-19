@@ -2,34 +2,52 @@ import { CurrencyType } from "@/app/enums/CurrencyEnum";
 import { InvoiceCurrency } from "@/app/enums/InvoiceCurrencyEnum";
 
 export type ArticleListType = {
-  ArticleNo: string;
-  ArticleName: string;
-  Unit: string;
-  Description?: string;
-  CreatedDate?: Date;
+  id?: number;
+  articleNo: string;
+  articleName: string;
+  unit: string;
+  description?: string;
+  createdDate?: Date;
 };
+export type ArticleList = {
+  totalCount: number;
+  articleLists: ArticleListType[];
+};
+
 export type CompanyPriceListType = {
-  CompanyCode: string;
-  CompanyName: string;
-  ArticleNo: string;
-  ArticleName: string;
-  UnitPrice: number;
-  Unit: string;
-  Currency: string;
-  Description?: string;
-  CreatedDate?: Date;
+  companyId: number;
+  articleId: number;
+  companyCode: string;
+  articleNo: string;
+  unitPrice: number;
+  currency: number;
+  description?: string;
+  createdDate?: Date;
+};
+export type FormCompanyPriceListType = {
+  companyCode: string;
+  articleNo: string;
+  unitPrice: number;
+  currency: number;
+  description?: string;
+  createdDate?: Date;
+};
+
+export type CompanyPriceList = {
+  totalCount: number;
+  companyPriceLists: CompanyPriceListType[];
 };
 
 export type CompanyListType = {
-  CompanyCode: string;
-  CompanyName: string;
-  PaymentTerm: number;
-  InvoiceCurrency: InvoiceCurrency;
-  Description?: string;
-  CreatedDate?: Date;
+  id?: number;
+  companyCode: string;
+  companyName: string;
+  paymentTerm: number;
+  invoiceCurrency: string;
+  description?: string;
+  createdDate?: Date;
 };
-
-export type Country = {
-  name: string;
-  code: string;
+export type CompanyList = {
+  totalCount: number;
+  companyLists: CompanyListType[];
 };

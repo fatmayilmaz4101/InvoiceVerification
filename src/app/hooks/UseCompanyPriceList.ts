@@ -1,15 +1,16 @@
-import { CompanyPriceListType } from "@/types/service";
+import { CompanyPriceList } from "@/types/service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCompanyPriceLists,
   postCompanyPriceList,
 } from "../services/CompanyPriceListService";
 
-export const UseCompanyPriceLists = () => {
+export const UseCompanyPriceLists = (page:number) => {
   const queryClient = useQueryClient();
-  const companyPriceQuery = useQuery<CompanyPriceListType[]>({
+
+  const companyPriceQuery = useQuery<CompanyPriceList>({
     queryKey: ["companyPrice"],
-    queryFn: getCompanyPriceLists,
+    queryFn: ()=>getCompanyPriceLists(page),
     staleTime: 300000,
     refetchOnReconnect: true,
   });
