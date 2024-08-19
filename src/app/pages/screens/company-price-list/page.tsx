@@ -23,6 +23,7 @@ import { getCompanyLists } from "@/app/services/CompanyListService";
 import { getArticleLists } from "@/app/services/ArticleListService";
 import { Toast } from "primereact/toast";
 import { Currency } from "@/app/enums/CurrencyEnum";
+import { FileUpload } from "primereact/fileupload";
 
 type CompanyType = {
   id: number | undefined;
@@ -64,6 +65,7 @@ const CompanyPriceList = () => {
     setPage(currentPage);
     refetch();
   };
+
   const searchCompanyCode = async (event: AutoCompleteCompleteEvent) => {
     try {
       const query = event.query;
@@ -111,15 +113,42 @@ const CompanyPriceList = () => {
     toast.current?.show({
       severity: "error",
       summary: "Error",
-      detail: "There was a problem adding the company",
+      detail: "There was a problem adding the company price",
       life: 3000,
     });
+  };
+  const onUpload = () => {
+    toast.current?.show({
+      severity: "info",
+      summary: "Success",
+      detail: "File Uploaded",
+    });
+    refetch();
+  };
+  const formatDate = (date: Date) => {
+    const d = new Date(date);
+    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${d.getFullYear()} ${d
+      .getHours()
+      .toString()
+      .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
   };
 
   const renderHeader = () => {
     return (
       <div className="flex ">
-        <Button label="Import" raised />
+        <FileUpload
+          mode="basic"
+          name="file"
+          url="http://localhost:5027/api/PriceListMapping/upload"
+          accept=".xlsx"
+          //maxFileSize={1000000}
+          onUpload={onUpload}
+          auto
+          chooseLabel="Upload"
+        />
+
         <Button
           style={{ marginLeft: 5 }}
           label="Add"
@@ -138,8 +167,6 @@ const CompanyPriceList = () => {
       companyCode: companyCode?.companyCode ?? "",
       articleNo: articleNo?.articleNo ?? "",
     };
-    console.log(newData);
-    console.log(companyCode?.id);
     try {
       await postCompanyPriceList(newData);
       refetch();
@@ -198,17 +225,18 @@ const CompanyPriceList = () => {
         key={4}
       />,
       <Column
-        field="companyPriceList.description"
-        header="Description"
-        style={{ minWidth: "14rem" }}
-        key={6}
-      />,
-      <Column
         field="companyPriceList.createdDate"
         header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
+        body={(rowData) => formatDate(rowData.companyPriceList.createdDate)}
         key={5}
+      />,
+      <Column
+        field="companyPriceList.description"
+        header="Description"
+        style={{ minWidth: "14rem" }}
+        key={6}
       />,
     ];
   };

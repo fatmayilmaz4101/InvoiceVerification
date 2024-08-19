@@ -123,17 +123,17 @@ const CompanyList = () => {
         key={3}
       />,
       <Column
-        field="description"
-        header="Description"
-        style={{ minWidth: "14rem" }}
-        key={5}
-      />,
-      <Column
         field="createdDate"
         header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
         key={4}
+      />,
+      <Column
+        field="description"
+        header="Description"
+        style={{ minWidth: "14rem" }}
+        key={5}
       />,
     ];
   };
