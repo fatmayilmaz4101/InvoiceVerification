@@ -4,15 +4,9 @@ import { Column } from "primereact/column";
 import React, { useMemo, useRef, useState } from "react";
 import GenericDataTable from "../../components/table/page";
 import { UseCompanyPriceLists } from "@/app/hooks/UseCompanyPriceList";
-import { FloatLabel } from "primereact/floatlabel";
 import PopUp from "../../components/pop-up/page";
-import { InputText } from "primereact/inputtext";
-import { Controller, useForm } from "react-hook-form";
-import {
-  AutoComplete,
-  AutoCompleteCompleteEvent,
-} from "primereact/autocomplete";
-import { InputNumber } from "primereact/inputnumber";
+import { useForm } from "react-hook-form";
+import { AutoCompleteCompleteEvent } from "primereact/autocomplete";
 import { postCompanyPriceList } from "@/app/services/CompanyPriceListService";
 import { DataTablePageEvent } from "primereact/datatable";
 import {
@@ -22,44 +16,38 @@ import {
 import { getCompanyLists } from "@/app/services/CompanyListService";
 import { getArticleLists } from "@/app/services/ArticleListService";
 import { Toast } from "primereact/toast";
-import { Currency } from "@/app/enums/CurrencyEnum";
+import { CurrencyOptions } from "@/app/enums/CurrencyEnum";
 import { FileUpload } from "primereact/fileupload";
+import { FormField } from "../../components/form-field/page";
 
 type CompanyType = {
   id: number | undefined;
   companyCode: string;
 };
-type ArticleNoType = {
+type ArticleType = {
   id: number | undefined;
   articleNo: string;
 };
 const CompanyPriceList = () => {
-  const toast = useRef<Toast>(null);
   const [page, setPage] = useState(1);
+
   const { data, isLoading, refetch } = UseCompanyPriceLists(page);
   const CompanyPriceLists = useMemo(() => {
     return data?.companyPriceLists || [];
   }, [data]);
   const TotalCount = data?.totalCount || 0;
-  const [showPopup, setShowPopup] = useState(false);
+
   const [filteredCompanyList, setFilteredCompanyList] =
     useState<CompanyType[]>();
-  const [companyCode, setCompanyCode] = useState<CompanyType>();
-
-  const [filteredArticleNo, setFilteredArticleNo] = useState<ArticleNoType[]>(
+  const [filteredArticleNo, setFilteredArticleNo] = useState<ArticleType[]>(
     []
   );
-  const [articleNo, setArticleNo] = useState<ArticleNoType>();
+  const [articleNo, setArticleNo] = useState<ArticleType>();
+  const [companyCode, setCompanyCode] = useState<CompanyType>();
+  const [showPopup, setShowPopup] = useState(false);
+  const toast = useRef<Toast>(null);
+  const { control, handleSubmit } = useForm<FormCompanyPriceListType>();
 
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      companyCode: "",
-      articleNo: "",
-      unitPrice: 0,
-      currency: Currency.TRY,
-      description: "",
-    },
-  });
   const onPage = (event: DataTablePageEvent) => {
     const currentPage = event.page !== undefined ? event.page + 1 : 1;
     setPage(currentPage);
@@ -70,14 +58,14 @@ const CompanyPriceList = () => {
     try {
       const query = event.query;
       const response = await getCompanyLists(page, query);
-      const companyCodes = response.companyLists.map((company) => {
-        var companyCode = {
+      const companies = response.companyLists.map((company) => {
+        var companyInfo = {
           id: company.id,
           companyCode: company.companyCode,
         };
-        return companyCode;
+        return companyInfo;
       });
-      setFilteredCompanyList(companyCodes);
+      setFilteredCompanyList(companies);
     } catch (error) {
       console.error("Filter company code error:", error);
     }
@@ -86,14 +74,14 @@ const CompanyPriceList = () => {
     try {
       const query = event.query;
       const response = await getArticleLists(page, query);
-      const allArticleNo = response.articleLists.map((article) => {
-        var articleNo = {
+      const articles = response.articleLists.map((article) => {
+        var articleInfo = {
           id: article.id,
           articleNo: article.articleNo,
         };
-        return articleNo;
+        return articleInfo;
       });
-      setFilteredArticleNo(allArticleNo);
+      setFilteredArticleNo(articles);
     } catch (error) {
       console.error("Filter Article no error:", error);
     }
@@ -148,7 +136,6 @@ const CompanyPriceList = () => {
           auto
           chooseLabel="Upload"
         />
-
         <Button
           style={{ marginLeft: 5 }}
           label="Add"
@@ -170,6 +157,7 @@ const CompanyPriceList = () => {
     try {
       await postCompanyPriceList(newData);
       refetch();
+      console.log(newData);
       showSuccess();
       setShowPopup(false);
     } catch (error) {
@@ -251,116 +239,54 @@ const CompanyPriceList = () => {
         onPage={onPage}
         totalRecords={TotalCount}
         ColumnArray={() => Columns()}
-      ></GenericDataTable>
+      />
       <PopUp show={showPopup} onClose={togglePopup}>
         <h2 className="text-center">Add Company Price</h2>
         <div className="p-fluid formgrid grid gap-4">
-          <Controller
+          <FormField
+            type="autocomplete"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <AutoComplete
-                    id="autocomplete"
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={(e) => {
-                      onChange(e.value);
-                      setCompanyCode(e.value);
-                    }}
-                    suggestions={filteredCompanyList}
-                    completeMethod={searchCompanyCode}
-                    field="companyCode"
-                  ></AutoComplete>
-                  <label htmlFor="CompanyCode">Company Code</label>
-                </span>
-              </div>
-            )}
+            required="Company Code field is required"
             name="companyCode"
+            label="Company Code"
+            onChangeComplete={(e) => {
+              setCompanyCode(e.value);
+            }}
+            suggestions={filteredCompanyList}
+            completeMethod={searchCompanyCode}
           />
-          <Controller
+          <FormField
+            type="autocomplete"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <AutoComplete
-                    id="autocomplete"
-                    value={value}
-                    onBlur={onBlur}
-                    onChange={(e) => {
-                      onChange(e.value);
-                      setArticleNo(e.value);
-                    }}
-                    suggestions={filteredArticleNo}
-                    completeMethod={searchArticleNo}
-                    field="articleNo"
-                  ></AutoComplete>
-                  <label htmlFor="ArticleNo">Article No</label>
-                </span>
-              </div>
-            )}
+            required="Article No field is required"
             name="articleNo"
+            label="Article No"
+            onChangeComplete={(e) => {
+              setArticleNo(e.value);
+            }}
+            suggestions={filteredArticleNo}
+            completeMethod={searchArticleNo}
           />
-
-          <Controller
+          <FormField
+            type="number"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputNumber
-                      onBlur={onBlur}
-                      value={value}
-                      onValueChange={(e) => onChange(e.value)}
-                      id="PaymentTerm"
-                    />
-                    <label htmlFor="UnitPrice">Unit Price</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Unit Price field is required"
             name="unitPrice"
+            label="Unit Price"
           />
-          <Controller
+          <FormField
+            type="dropdown"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputNumber
-                      onBlur={onBlur}
-                      onValueChange={(e) => onChange(e.value)}
-                      value={value}
-                    />
-                    <label htmlFor="Currency">Currency</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Currency field is required"
+            options={CurrencyOptions}
             name="currency"
+            label="Currency"
           />
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="Description">Description</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
             name="description"
+            label="Description"
           />
           <div className="flex justify-center items-center">
             <Button onClick={handleSubmit(onSubmit)}>Add</Button>

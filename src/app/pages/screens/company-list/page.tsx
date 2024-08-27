@@ -4,17 +4,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
 import PopUp from "../../components/pop-up/page";
-import { InputText } from "primereact/inputtext";
-import { FloatLabel } from "primereact/floatlabel";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { postCompanyList } from "@/app/services/CompanyListService";
-import { Dropdown } from "primereact/dropdown";
 import { InvoiceCurrencyOptions } from "@/app/enums/InvoiceCurrencyEnum";
 import { CompanyListType } from "@/types/service";
-import { InputNumber } from "primereact/inputnumber";
 import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 import { DataTablePageEvent } from "primereact/datatable";
 import { Toast } from "primereact/toast";
+import { FormField } from "../../components/form-field/page";
 
 const CompanyList = () => {
   const toast = useRef<Toast>(null);
@@ -29,16 +26,7 @@ const CompanyList = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      companyCode: "",
-      companyName: "",
-      paymentTerm: 0,
-      invoiceCurrency: "",
-      description: "",
-    },
-  });
+  } = useForm<CompanyListType>();
 
   const onPage = (event: DataTablePageEvent) => {
     const currentPage = event.page !== undefined ? event.page + 1 : 1;
@@ -64,7 +52,6 @@ const CompanyList = () => {
   };
 
   useEffect(() => {
-    console.log("useeefc", CompanyLists);
     refetch();
   }, [page, CompanyLists, refetch]);
 
@@ -153,115 +140,40 @@ const CompanyList = () => {
       <PopUp show={showPopup} onClose={togglePopup}>
         <h2 className="text-center">Add Company</h2>
         <div className="p-fluid formgrid grid gap-4">
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{
-              required: "",
-            }}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="CompanyCode">Company Code</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Company Code field is required"
             name="companyCode"
+            label="Company Code"
           />
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{
-              required: "",
-            }}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="CompanyName">Company Name</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Company Name field is required"
             name="companyName"
+            label="Company Name"
           />
-          <Controller
+          <FormField
+            type="number"
             control={control}
-            rules={{
-              required: "",
-            }}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputNumber
-                      onBlur={onBlur}
-                      value={value}
-                      onValueChange={(e) => onChange(e.value)}
-                      id="PaymentTerm"
-                    />
-                    <label htmlFor="PaymentTerm">Payment Term</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Payment Term field is required"
             name="paymentTerm"
+            label="Payment Term"
           />
-          <Controller
+          <FormField
+            type="dropdown"
             control={control}
-            rules={{
-              required: "",
-            }}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <Dropdown
-                      onBlur={onBlur}
-                      value={value}
-                      onChange={onChange}
-                      checkmark={true}
-                      highlightOnSelect={false}
-                      options={InvoiceCurrencyOptions}
-                      optionLabel="label"
-                    />
-                    <label htmlFor="InvoiceCurrency">Invoice Currency</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Invoice Currency field is required"
+            options={InvoiceCurrencyOptions}
             name="invoiceCurrency"
+            label="Invoice Currency"
           />
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{
-              required: "",
-            }}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="Description">Description</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
             name="description"
+            label="Description"
           />
           <div className="flex justify-center items-center">
             <Button onClick={handleSubmit(onSubmit)}>Add</Button>

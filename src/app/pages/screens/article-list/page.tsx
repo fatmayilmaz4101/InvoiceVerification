@@ -4,25 +4,25 @@ import GenericDataTable from "../../components/table/page";
 import { Column } from "primereact/column";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { UseArticleList } from "@/app/hooks/UseArticleList";
-import { Controller, useForm } from "react-hook-form";
-import { FloatLabel } from "primereact/floatlabel";
-import { InputText } from "primereact/inputtext";
-import { Dropdown } from "primereact/dropdown";
+import { useForm } from "react-hook-form";
 import PopUp from "../../components/pop-up/page";
 import { UnitOptions } from "@/app/enums/UnitEnum";
 import { ArticleListType } from "@/types/service";
 import { postArticleList } from "@/app/services/ArticleListService";
 import { DataTablePageEvent } from "primereact/datatable";
 import { Toast } from "primereact/toast";
+import { FormField } from "../../components/form-field/page";
 
 const ArticleList = () => {
   const toast = useRef<Toast>(null);
   const [page, setPage] = useState(1);
   const { data, isLoading, refetch } = UseArticleList(page);
+
   const ArticleLists = useMemo(() => {
     return data?.articleLists || [];
   }, [data]);
   const TotalCount = data?.totalCount || 0;
+
   const [showPopup, setShowPopup] = useState(false);
   const togglePopup = () => {
     setShowPopup(!showPopup);
@@ -53,15 +53,8 @@ const ArticleList = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      articleNo: "",
-      articleName: "",
-      unit: "",
-      description: "",
-    },
-  });
+  } = useForm<ArticleListType>();
+  
   useEffect(() => {
     refetch();
   }, [page, ArticleLists, refetch]);
@@ -139,86 +132,33 @@ const ArticleList = () => {
       <PopUp show={showPopup} onClose={togglePopup}>
         <h2 className="text-center">Add Article</h2>
         <div className="p-fluid formgrid grid gap-4">
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="ArticleNo">Article No</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Article No field is required"
             name="articleNo"
+            label="Article No"
           />
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="ArticleName">Article Name</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Article Name field is required"
             name="articleName"
+            label="Article Name"
           />
-
-          <Controller
+          <FormField
+            type="dropdown"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <Dropdown
-                      onBlur={onBlur}
-                      value={value}
-                      onChange={onChange}
-                      checkmark={true}
-                      highlightOnSelect={false}
-                      options={UnitOptions}
-                      optionLabel="label"
-                    />
-                    <label htmlFor="Unit">Unit</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
+            required="Unit field is required"
+            options={UnitOptions}
             name="unit"
+            label="Unit"
           />
-          <Controller
+          <FormField
+            type="text"
             control={control}
-            rules={{}}
-            render={({ field: { onBlur, onChange, value } }) => (
-              <div className="field col-12 mb-1">
-                <span className="p-float-label">
-                  <FloatLabel>
-                    <InputText
-                      onBlur={onBlur}
-                      onChange={onChange}
-                      value={value}
-                    />
-                    <label htmlFor="Description">Description</label>
-                  </FloatLabel>
-                </span>
-              </div>
-            )}
             name="description"
+            label="Description"
           />
           <div className="flex justify-center items-center">
             <Button onClick={handleSubmit(onSubmit)}>Add</Button>

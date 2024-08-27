@@ -1,4 +1,3 @@
-import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 import {
   DataTable,
   DataTableHeaderTemplateType,
