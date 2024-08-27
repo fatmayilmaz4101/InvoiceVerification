@@ -6,6 +6,9 @@ export type ArticleListType = {
   articleNo: string;
   articleName: string;
   unit: string;
+  minPrice: number;
+  maxPrice: number;
+  cost: number;
   description?: string;
   createdDate?: Date;
 };
@@ -21,6 +24,9 @@ export type CompanyPriceListType = {
   articleNo: string;
   unitPrice: number;
   currency: number;
+  minPrice?: number;
+  maxPrice?: number;
+  cost?: number;
   description?: string;
   createdDate?: Date;
 };

@@ -50,11 +50,8 @@ const ArticleList = () => {
     });
   };
 
-  const {
-    control,
-    handleSubmit,
-  } = useForm<ArticleListType>();
-  
+  const { control, handleSubmit } = useForm<ArticleListType>();
+
   useEffect(() => {
     refetch();
   }, [page, ArticleLists, refetch]);
@@ -102,17 +99,35 @@ const ArticleList = () => {
         key={3}
       />,
       <Column
+        field="minPrice"
+        header="Min Price"
+        style={{ minWidth: "14rem" }}
+        key={4}
+      />,
+      <Column
+        field="maxPrice"
+        header="Max Price"
+        style={{ minWidth: "14rem" }}
+        key={5}
+      />,
+      <Column
+        field="cost"
+        header="Cost"
+        style={{ minWidth: "14rem" }}
+        key={6}
+      />,
+      <Column
         field="createdDate"
         header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
-        key={4}
+        key={7}
       />,
       <Column
         field="description"
         header="Description"
         style={{ minWidth: "14rem" }}
-        key={5}
+        key={8}
       />,
     ];
   };
@@ -154,6 +169,19 @@ const ArticleList = () => {
             name="unit"
             label="Unit"
           />
+          <FormField
+            type="text"
+            control={control}
+            name="minPrice"
+            label="Min Price"
+          />
+          <FormField
+            type="text"
+            control={control}
+            name="maxPrice"
+            label="Max Price"
+          />
+          <FormField type="text" control={control} name="cost" label="Cost" />
           <FormField
             type="text"
             control={control}

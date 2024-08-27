@@ -39,9 +39,7 @@ const CompanyPriceList = () => {
 
   const [filteredCompanyList, setFilteredCompanyList] =
     useState<CompanyType[]>();
-  const [filteredArticleNo, setFilteredArticleNo] = useState<ArticleType[]>(
-    []
-  );
+  const [filteredArticleNo, setFilteredArticleNo] = useState<ArticleType[]>([]);
   const [articleNo, setArticleNo] = useState<ArticleType>();
   const [companyCode, setCompanyCode] = useState<CompanyType>();
   const [showPopup, setShowPopup] = useState(false);
@@ -173,7 +171,6 @@ const CompanyPriceList = () => {
         style={{ minWidth: "10rem" }}
         key={1}
       />,
-
       <Column
         field="companyList.companyName"
         header="Company Name"
@@ -198,19 +195,37 @@ const CompanyPriceList = () => {
         header="Unit Price"
         dataType="numeric"
         style={{ minWidth: "10rem" }}
-        key={1}
+        key={5}
       />,
       <Column
         field="articleList.unit"
         header="Unit"
         style={{ minWidth: "14rem" }}
-        key={4}
+        key={6}
       />,
       <Column
         field="companyPriceList.currency"
         header="Currency"
         style={{ minWidth: "14rem" }}
-        key={4}
+        key={7}
+      />,
+      <Column
+        field="articleList.minPrice"
+        header="Min Price"
+        style={{ minWidth: "14rem" }}
+        key={8}
+      />,
+      <Column
+        field="articleList.maxPrice"
+        header="Max Price"
+        style={{ minWidth: "14rem" }}
+        key={9}
+      />,
+      <Column
+        field="articleList.cost"
+        header="Cost"
+        style={{ minWidth: "14rem" }}
+        key={10}
       />,
       <Column
         field="companyPriceList.createdDate"
@@ -218,13 +233,13 @@ const CompanyPriceList = () => {
         dataType="date"
         style={{ minWidth: "10rem" }}
         body={(rowData) => formatDate(rowData.companyPriceList.createdDate)}
-        key={5}
+        key={11}
       />,
       <Column
         field="companyPriceList.description"
         header="Description"
         style={{ minWidth: "14rem" }}
-        key={6}
+        key={12}
       />,
     ];
   };
