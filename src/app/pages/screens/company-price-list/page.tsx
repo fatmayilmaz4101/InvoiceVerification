@@ -146,6 +146,7 @@ const CompanyPriceList = () => {
   const onSubmit = async (data: FormCompanyPriceListType) => {
     const newData: CompanyPriceListType = {
       ...data,
+
       createdDate: new Date(),
       companyId: companyCode?.id ?? 0,
       articleId: articleNo?.id ?? 0,

@@ -1,12 +1,15 @@
 import { ArticleList } from "@/types/service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getArticleLists, postArticleList } from "../services/ArticleListService";
+import {
+  getArticleLists,
+  postArticleList,
+} from "../services/ArticleListService";
 
-export const UseArticleList = (page:number, articleNo?: string) => {
+export const UseArticleList = (page: number, articleNo?: string) => {
   const queryClient = useQueryClient();
   const articleQuery = useQuery<ArticleList>({
     queryKey: ["article"],
-    queryFn: ()=>getArticleLists(page, articleNo),
+    queryFn: () => getArticleLists(page, articleNo),
     staleTime: 300000,
     refetchOnReconnect: true,
   });
@@ -16,6 +19,7 @@ export const UseArticleList = (page:number, articleNo?: string) => {
       queryClient.invalidateQueries({ queryKey: ["article"] });
     },
   });
+
   return {
     ...articleQuery,
     addArticleMutation: articleMutation.mutate,

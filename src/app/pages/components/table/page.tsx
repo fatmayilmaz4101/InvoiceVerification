@@ -1,9 +1,12 @@
+import { Column } from "primereact/column";
 import {
   DataTable,
   DataTableHeaderTemplateType,
   DataTablePageEvent,
   DataTableValueArray,
 } from "primereact/datatable";
+import { ArticleListType, CompanyPriceListType, Type } from "@/types/service";
+import { EditColumn } from "../edit-column/page";
 interface DataTableType {
   value: DataTableValueArray;
   header: DataTableHeaderTemplateType<DataTableValueArray>;
@@ -39,6 +42,12 @@ const GenericDataTable = ({
             pageLinkSize={10}
           >
             {ColumnArray()}
+            <Column
+              body={(rowData: CompanyPriceListType) => EditColumn(rowData.id)}
+              header="Edit"
+              style={{ minWidth: "14rem" }}
+              key={9}
+            />
           </DataTable>
         </div>
       </div>

@@ -23,3 +23,7 @@ export const postCompanyList = async (
     throw new Error("Hata:", error);
   }
 };
+export const getCompanyById = async (id: number): Promise<CompanyListType> => {
+  const response = await ApiClient.get(`/CompanyList/${id}`);
+  return response.data;
+};

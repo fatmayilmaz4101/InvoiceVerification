@@ -13,7 +13,6 @@ export const getArticleLists = async (
     totalCount: response.data.totalCount,
   };
 };
-
 export const postArticleList = async (
   newArticle: Omit<ArticleListType, "id">
 ): Promise<ArticleListType[]> => {
@@ -23,4 +22,8 @@ export const postArticleList = async (
   } catch (error: any) {
     throw new Error("Hata:", error);
   }
+};
+export const getArticleById = async (id: number): Promise<ArticleListType> => {
+  const response = await ApiClient.get(`/ArticleList/${id}`);
+  return response.data;
 };
