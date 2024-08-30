@@ -1,6 +1,24 @@
-import { CurrencyType } from "@/app/enums/CurrencyEnum";
+import { Currency, CurrencyType } from "@/app/enums/CurrencyEnum";
 import { InvoiceCurrency } from "@/app/enums/InvoiceCurrencyEnum";
-
+export type UpdateType = {
+  id?: number;
+  articleNo?: string;
+  articleName?: string;
+  unit?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  cost?: number;
+  companyId?: number;
+  articleId?: number;
+  companyCode?: string;
+  unitPrice?: number;
+  currency?: CurrencyType;
+  companyName?: string;
+  paymentTerm?: number;
+  invoiceCurrency?: string;
+  description?: string;
+  createdDate?: Date;
+};
 //Article Types
 export type ArticleListType = {
   id: number;
@@ -19,13 +37,13 @@ export type ArticleList = {
 };
 //Company Price List Type
 export type CompanyPriceListType = {
-  id: number;
+  id?: number;
   companyId: number;
   articleId: number;
   companyCode: string;
   articleNo: string;
   unitPrice: number;
-  currency: number;
+  currency: string;
   minPrice?: number;
   maxPrice?: number;
   cost?: number;
@@ -36,7 +54,7 @@ export type FormCompanyPriceListType = {
   companyCode: string;
   articleNo: string;
   unitPrice: number;
-  currency: number;
+  currency: string;
   companyId: number;
   articleId: number;
   description?: string;

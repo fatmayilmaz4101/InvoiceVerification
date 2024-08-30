@@ -7,7 +7,6 @@ export const getCompanyPriceLists = async (
   const response = await ApiClient.get("/CompanyPriceList", {
     params: { page: page },
   });
-  console.log("dataa: ", response.data.companyPriceLists);
   return {
     companyPriceLists: response.data.companyPriceLists,
     totalCount: response.data.totalCount,
@@ -27,6 +26,5 @@ export const getCompanyPriceById = async (
   id: number
 ): Promise<CompanyPriceListType> => {
   const response = await ApiClient.get(`/CompanyPriceList/${id}`);
-  console.log("aa: ", response.data);
   return response.data;
 };
