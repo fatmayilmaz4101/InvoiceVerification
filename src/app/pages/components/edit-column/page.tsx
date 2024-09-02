@@ -5,16 +5,33 @@ import { UnitOptions } from "@/app/enums/UnitEnum";
 import { Button } from "primereact/button";
 import { useForm } from "react-hook-form";
 import { InvoiceCurrencyOptions } from "@/app/enums/InvoiceCurrencyEnum";
-import { getArticleById } from "@/app/services/ArticleListService";
-import { getCompanyById } from "@/app/services/CompanyListService";
-import { getCompanyPriceById } from "@/app/services/CompanyPriceListService";
+import {
+  getArticleById,
+  updateArticleList,
+} from "@/app/services/ArticleListService";
+import {
+  getCompanyById,
+  updateCompanyList,
+} from "@/app/services/CompanyListService";
+import {
+  getCompanyPriceById,
+  updateCompanyPriceList,
+} from "@/app/services/CompanyPriceListService";
 import { CurrencyOptions } from "@/app/enums/CurrencyEnum";
-import { CompanyPriceListType, UpdateType } from "@/types/service";
+import { UpdateType } from "@/types/service";
+import * as jsonpatch from "fast-json-patch";
+import { UseArticleList } from "@/app/hooks/UseArticleList";
+import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
+import { UseCompanyPriceLists } from "@/app/hooks/UseCompanyPriceList";
 
 export const EditColumn = (dataId: number) => {
   const [currentData, setCurrentData] = useState<any>({});
   const [showPopup, setShowPopup] = useState(false);
   const { control, handleSubmit, reset } = useForm<any>({});
+  const { refetch: refetchArticle } = UseArticleList(1);
+  const { refetch: refetchCompany } = UseCompanyList(1);
+  const { refetch: refetchCompanyPrice } = UseCompanyPriceLists(1);
+
   const currentPath = window.location.pathname;
   useEffect(() => {
     reset(currentData);
@@ -141,6 +158,7 @@ export const EditColumn = (dataId: number) => {
               required="Company Code field is required"
               name="companyCode"
               label="Company Code"
+              disabled={true}
             />
             <FormField
               type="autocomplete"
@@ -148,6 +166,7 @@ export const EditColumn = (dataId: number) => {
               required="Article No field is required"
               name="articleNo"
               label="Article No"
+              disabled={true}
             />
             <FormField
               type="number"
@@ -177,7 +196,45 @@ export const EditColumn = (dataId: number) => {
     }
   };
 
-  const onSubmit = async (data: any) => {};
+  const onSubmit = async (data: any) => {
+    const patch = jsonpatch.compare(currentData, data);
+
+    if (patch.length === 0) {
+      console.log("No change in data");
+      return;
+    }
+    switch (currentPath) {
+      case "/pages/screens/article-list":
+        try {
+          await updateArticleList(dataId, patch);
+          setShowPopup(false);
+          refetchArticle();
+        } catch (error) {
+          console.error("Article List Update Error:", error);
+        }
+        break;
+      case "/pages/screens/company-list":
+        try {
+          await updateCompanyList(dataId, patch);
+          refetchCompany();
+          setShowPopup(false);
+        } catch (error) {
+          console.error("Company List Update Error:", error);
+        }
+        break;
+      case "/pages/screens/company-price-list":
+        try {
+          await updateCompanyPriceList(dataId, patch);
+          refetchCompanyPrice();
+          setShowPopup(false);
+        } catch (error) {
+          console.error("Company Price List Update Error:", error);
+        }
+        break;
+      default:
+        return;
+    }
+  };
 
   const handleClick = () => {
     console.log("currentData: ", currentData);
@@ -201,7 +258,7 @@ export const EditColumn = (dataId: number) => {
         </h2>
         <div className="p-fluid formgrid grid gap-4">{renderFormFields()}</div>
         <div className="flex justify-center items-center">
-          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+          <Button onClick={handleSubmit(onSubmit)}>Update</Button>
         </div>
       </PopUp>
     </>

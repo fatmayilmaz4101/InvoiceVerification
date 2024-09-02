@@ -1,5 +1,6 @@
 import { ArticleList, ArticleListType } from "@/types/service";
 import ApiClient from "./ApiClient";
+import * as jsonpatch from "fast-json-patch";
 
 export const getArticleLists = async (
   page: number,
@@ -26,4 +27,15 @@ export const postArticleList = async (
 export const getArticleById = async (id: number): Promise<ArticleListType> => {
   const response = await ApiClient.get(`/ArticleList/${id}`);
   return response.data;
+};
+export const updateArticleList = async (
+  id: number,
+  patchData: jsonpatch.Operation[]
+): Promise<void> => {
+  try {
+    const response = await ApiClient.patch(`/ArticleList/${id}`, patchData);
+    console.log("Update successful:", response);
+  } catch (error: any) {
+    console.error("Update error:", error);
+  }
 };

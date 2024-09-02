@@ -1,5 +1,6 @@
 import { CompanyList, CompanyListType } from "@/types/service";
 import ApiClient from "./ApiClient";
+import * as jsonpatch from "fast-json-patch";
 
 export const getCompanyLists = async (
   page: number,
@@ -26,4 +27,16 @@ export const postCompanyList = async (
 export const getCompanyById = async (id: number): Promise<CompanyListType> => {
   const response = await ApiClient.get(`/CompanyList/${id}`);
   return response.data;
+};
+
+export const updateCompanyList = async (
+  id: number,
+  patchData: jsonpatch.Operation[]
+): Promise<void> => {
+  try {
+    const response = await ApiClient.patch(`/CompanyList/${id}`, patchData);
+    console.log("Update successful:", response);
+  } catch (error: any) {
+    console.error("Update error:", error);
+  }
 };

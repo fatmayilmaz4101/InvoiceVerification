@@ -19,6 +19,7 @@ type FormFieldType = {
   onChangeComplete?: (event: AutoCompleteChangeEvent) => void;
   suggestions?: any[] | undefined;
   completeMethod?(event: AutoCompleteCompleteEvent): void;
+  disabled?: boolean;
 };
 
 export const FormField = ({
@@ -31,6 +32,7 @@ export const FormField = ({
   onChangeComplete,
   suggestions,
   completeMethod,
+  disabled = false,
 }: FormFieldType) => {
   return (
     <>
@@ -49,6 +51,7 @@ export const FormField = ({
                 {type === "text" ? (
                   <InputText
                     onBlur={onBlur}
+                    disabled={disabled}
                     onChange={onChange}
                     value={value}
                     {...(error && {
@@ -63,6 +66,7 @@ export const FormField = ({
                 ) : type === "number" ? (
                   <InputNumber
                     onBlur={onBlur}
+                    disabled={disabled}
                     onChange={(e) => {
                       onChange(e.value);
                       console.log(e.value);
@@ -83,6 +87,7 @@ export const FormField = ({
                     onBlur={onBlur}
                     onChange={onChange}
                     value={value}
+                    disabled={disabled}
                     {...(error && {
                       tooltip: error.message,
                       tooltipOptions: {
@@ -100,6 +105,7 @@ export const FormField = ({
                   <AutoComplete
                     id="autocomplete"
                     onBlur={onBlur}
+                    disabled={disabled}
                     value={value}
                     onChange={(e) => {
                       onChange(e.value);
