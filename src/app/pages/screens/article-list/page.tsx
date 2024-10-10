@@ -12,6 +12,7 @@ import { postArticleList } from "@/app/services/ArticleListService";
 import { DataTablePageEvent } from "primereact/datatable";
 import { Toast } from "primereact/toast";
 import { FormField } from "../../components/form-field/page";
+import { formatDate } from "../company-price-list/page";
 
 const ArticleList = () => {
   const toast = useRef<Toast>(null);
@@ -57,12 +58,8 @@ const ArticleList = () => {
   }, [page, ArticleLists, refetch]);
 
   const onSubmit = async (data: ArticleListType) => {
-    const newData = {
-      ...data,
-      createdDate: new Date(),
-    };
     try {
-      await postArticleList(newData);
+      await postArticleList(data);
       refetch();
       showSuccess();
       setShowPopup(false);
@@ -121,6 +118,7 @@ const ArticleList = () => {
         header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
+        body={(rowData) => formatDate(rowData.createdDate)}
         key={7}
       />,
       <Column

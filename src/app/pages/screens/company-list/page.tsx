@@ -12,6 +12,7 @@ import { UseCompanyList } from "@/app/hooks/UseCompanyLists";
 import { DataTablePageEvent } from "primereact/datatable";
 import { Toast } from "primereact/toast";
 import { FormField } from "../../components/form-field/page";
+import { formatDate } from "../company-price-list/page";
 
 const CompanyList = () => {
   const toast = useRef<Toast>(null);
@@ -23,10 +24,7 @@ const CompanyList = () => {
   }, [data]);
   const TotalCount = data?.totalCount || 0;
 
-  const {
-    control,
-    handleSubmit,
-  } = useForm<CompanyListType>();
+  const { control, handleSubmit } = useForm<CompanyListType>();
 
   const onPage = (event: DataTablePageEvent) => {
     const currentPage = event.page !== undefined ? event.page + 1 : 1;
@@ -114,6 +112,7 @@ const CompanyList = () => {
         header="Created Date"
         dataType="date"
         style={{ minWidth: "10rem" }}
+        body={(rowData) => formatDate(rowData.createdDate)}
         key={4}
       />,
       <Column

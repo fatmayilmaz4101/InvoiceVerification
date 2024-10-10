@@ -28,6 +28,16 @@ type ArticleType = {
   id: number | undefined;
   articleNo: string;
 };
+export const formatDate = (date: Date) => {
+  const d = new Date(date);
+  return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${d.getFullYear()} ${d
+    .getHours()
+    .toString()
+    .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
+};
+
 const CompanyPriceList = () => {
   const [page, setPage] = useState(1);
 
@@ -111,15 +121,6 @@ const CompanyPriceList = () => {
     });
     refetch();
   };
-  const formatDate = (date: Date) => {
-    const d = new Date(date);
-    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}/${d.getFullYear()} ${d
-      .getHours()
-      .toString()
-      .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
-  };
 
   const renderHeader = () => {
     return (
@@ -146,8 +147,6 @@ const CompanyPriceList = () => {
   const onSubmit = async (data: FormCompanyPriceListType) => {
     const newData: CompanyPriceListType = {
       ...data,
-
-      createdDate: new Date(),
       companyId: companyCode?.id ?? 0,
       articleId: articleNo?.id ?? 0,
       companyCode: companyCode?.companyCode ?? "",

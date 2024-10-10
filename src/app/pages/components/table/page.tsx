@@ -5,7 +5,7 @@ import {
   DataTablePageEvent,
   DataTableValueArray,
 } from "primereact/datatable";
-import { ArticleListType, CompanyPriceListType, Type } from "@/types/service";
+import { CompanyPriceListType } from "@/types/service";
 import { EditColumn } from "../edit-column/page";
 interface DataTableType {
   value: DataTableValueArray;
@@ -43,7 +43,9 @@ const GenericDataTable = ({
           >
             {ColumnArray()}
             <Column
-              body={(rowData: CompanyPriceListType) => EditColumn(rowData.id)}
+              body={(rowData: CompanyPriceListType) =>
+                EditColumn(rowData.id || 0)
+              }
               header="Edit"
               style={{ minWidth: "14rem" }}
               key={9}

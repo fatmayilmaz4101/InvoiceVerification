@@ -5,19 +5,19 @@ import {
   postCompanyPriceList,
 } from "../services/CompanyPriceListService";
 
-export const UseCompanyPriceLists = (page:number) => {
+export const UseCompanyPriceLists = (page: number) => {
   const queryClient = useQueryClient();
 
   const companyPriceQuery = useQuery<CompanyPriceList>({
     queryKey: ["companyPrice"],
-    queryFn: ()=>getCompanyPriceLists(page),
+    queryFn: () => getCompanyPriceLists(page),
     staleTime: 300000,
     refetchOnReconnect: true,
   });
   const companyPriceMutation = useMutation({
     mutationFn: postCompanyPriceList,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["company"] });
+      queryClient.invalidateQueries({ queryKey: ["companyPrice"] });
     },
   });
   return {

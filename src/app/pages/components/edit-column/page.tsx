@@ -40,6 +40,7 @@ export const EditColumn = (dataId: number) => {
   useEffect(() => {
     const fetchData = async () => {
       let data: UpdateType;
+      console.log("dataid: ", dataId);
       switch (currentPath) {
         case "/pages/screens/article-list":
           data = await getArticleById(dataId);
